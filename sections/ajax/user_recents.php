@@ -8,6 +8,26 @@ if (empty($UserID) || $Limit > 50) {
 if (empty($Limit)) {
 	$Limit = 15;
 }
+
+if ($UserID != $LoggedUser['ID']) {
+	// We can always view our own torrents
+	$DB->query("
+		SELECT m.Paranoia
+		FROM users_main AS m
+		WHERE m.ID = $UserID");
+
+	if (!$DB->has_results()) { // If user doesn't exist
+		json_die("failure", "no such user");
+	}
+
+	list($Paranoia) = $DB->next_record(MYSQLI_NUM, false);
+
+	$Paranoia = unserialize($Paranoia);
+	if (!is_array($Paranoia)) {
+		$Paranoia = array();
+	}
+}
+
 $Results = array();
 if (check_paranoia_here('snatched')) {
 	$DB->query("
