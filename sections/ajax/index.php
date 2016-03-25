@@ -160,6 +160,9 @@ switch ($_GET['action']) {
 	case 'pushbullet_devices':
 		require(SERVER_ROOT . '/sections/ajax/pushbullet_devices.php');
 		break;
+	case 'user_torrents':
+		require(SERVER_ROOT . '/sections/ajax/user_torrents.php');
+		break;
 	default:
 		// If they're screwing around with the query string
 		json_die("failure");
